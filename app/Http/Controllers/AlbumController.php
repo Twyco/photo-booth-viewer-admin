@@ -16,13 +16,13 @@ class AlbumController
      */
     public function index(): JsonResponse
     {
-        $albums = Album::all();
+        $albums = Album::orderBy('event_date', 'desc')->get();
         if ($albums->isEmpty()) {
             return response()->json([
                 'message' => 'Es sind noch keine Alben vorhanden'
             ]);
         }
-        return response()->json($albums);
+        return response()->json($albums->sortBy('event_date'));
     }
 
     /**
