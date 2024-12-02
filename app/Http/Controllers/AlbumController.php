@@ -8,6 +8,7 @@ use App\Models\Album;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AlbumController
 {
@@ -104,4 +105,61 @@ class AlbumController
             ], 404);
         }
     }
+
+    public function getAlbumImages($uuid): JsonResponse
+    {
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        $albumPath = storage_path('app/albums/' . $album->path);
+        if (!is_dir($albumPath)) {
+            return response()->json([
+                'error' => 'Album path not found',
+            ], 404);
+        }
+
+        $images = [];
+        foreach (glob($albumPath . '/*.jpeg') as $image) {
+            $images[] = basename($image);
+        }
+
+        if (empty($images)) {
+            return response()->json([
+                'error' => 'This album does not have any images!',
+            ], 200);
+        }
+
+        return response()->json([
+            'album' => $album,
+            'images' => $images,
+        ], 200);
+    }
+
+    public function getImage($uuid, $imageName): BinaryFileResponse|JsonResponse
+    {
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        $imagePath = storage_path('app/albums/' . $album->path . '/' . $imageName);
+        if (!file_exists($imagePath)) {
+            return response()->json([
+                'error' => 'Image not Found!',
+            ], 404);
+        }
+
+        return response()->file($imagePath);
+    }
+
 }
