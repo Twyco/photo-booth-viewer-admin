@@ -118,7 +118,7 @@ class AlbumController
         }
 
         $imagePath = storage_path('app/cover/' . $album->cover_file_name);
-        if (!file_exists($imagePath)) {
+        if (!is_file($imagePath)) {
             return response()->file(storage_path('app/cover/default.png'));
         }
 
