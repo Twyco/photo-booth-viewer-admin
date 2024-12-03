@@ -28,7 +28,7 @@ class UpdateAlbumRequest extends FormRequest
             'name' => 'string|max:30', //TODO Check formatting and change max length
             'description' => 'string|max:200',
             'path' => 'string|max:255',
-            'cover_path' => 'string|max:255',
+            'cover_file_name' => 'string|max:255',
             'event_date' => 'date',
         ];
     }
@@ -41,7 +41,7 @@ class UpdateAlbumRequest extends FormRequest
             'description.max' => 'The description may not be greater than 200 characters.',
             'path.required' => 'The path field is required.',
             'path.max' => 'The path may not be greater than 255 characters.',
-            'cover_path.max' => 'The cover may not be greater than 255 characters.',
+            'cover_file_name.max' => 'The cover may not be greater than 255 characters.',
             'event_date.date' => 'The published date must be a valid date.',
         ];
     }

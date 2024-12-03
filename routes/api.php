@@ -9,6 +9,8 @@ Route::prefix('albums')->group(function () {
 
   Route::get('{uuid}', [AlbumController::class, 'show']);
 
+  Route::get('{uuid}/cover', [AlbumController::class, 'getAlbumCover']);
+
   Route::get('{uuid}/images', [AlbumController::class, 'getAlbumImages']);
 
   Route::get('{uuid}/images/{imageName}', [AlbumController::class, 'getImage']);

@@ -11,7 +11,7 @@ class Album extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['name', 'description', 'path', 'cover_path', 'event_date'];
+    protected $fillable = ['name', 'description', 'path', 'cover_file_name', 'event_date'];
     protected $guarded = ['uuid'];
 
     protected static function boot()

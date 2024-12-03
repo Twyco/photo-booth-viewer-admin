@@ -28,7 +28,7 @@ class StoreAlbumRequest extends FormRequest
             'name' => 'required|string|max:30', //TODO Check formatting and change max length
             'description' => 'nullable|string|max:200',
             'path' => 'required|string|max:255',
-            'cover_path' => 'nullable|string|max:255',
+            'cover_file_name' => 'nullable|string|max:255',
             'event_date' => 'date',
         ];
     }
@@ -41,7 +41,7 @@ class StoreAlbumRequest extends FormRequest
             'description.max' => 'The description may not be greater than 200 characters.',
             'path.required' => 'The path field is required.',
             'path.max' => 'The path may not be greater than 255 characters.',
-            'cover_path.max' => 'The cover may not be greater than 255 characters.',
+            'cover_file_name.max' => 'The cover may not be greater than 255 characters.',
             'event_date.date' => 'The published date must be a valid date.',
         ];
     }

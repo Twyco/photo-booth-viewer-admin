@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable()->default(null);
             $table->string('path');
-            $table->string('cover_path')->nullable()->default(null);
+            $table->string('cover_file_name')->nullable()->default(null);
             $table->date('event_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });

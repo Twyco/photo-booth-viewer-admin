@@ -53,7 +53,7 @@ class AlbumController
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
             'path' => $validated['path'],
-            'cover_path' => $validated['cover_path'] ?? null,
+            'cover_file_name' => $validated['cover_file_name'] ?? null,
         ];
 
         if (isset($validated['event_date'])) {
@@ -104,6 +104,25 @@ class AlbumController
                 'uuid' => $uuid,
             ], 404);
         }
+    }
+
+    public function getAlbumCover($uuid): BinaryFileResponse|JsonResponse
+    {
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        $imagePath = storage_path('app/cover/' . $album->cover_file_name);
+        if (!file_exists($imagePath)) {
+            return response()->file(storage_path('app/cover/default.png'));
+        }
+
+        return response()->file($imagePath);
     }
 
     public function getAlbumImages($uuid): JsonResponse
