@@ -241,7 +241,6 @@ class AlbumController
 
         $count = count(glob($albumPath . '/*.jpeg'));
         return response()->json([
-            'album' => $album,
             'imageCount' => $count
         ],200);
     }
