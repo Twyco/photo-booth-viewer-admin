@@ -186,7 +186,7 @@ class AlbumController
     {
         Log::warning($number);
         $number = intval($number);
-        if($number <= 0) {
+        if ($number <= 0) {
             return response()->json([
                 'error' => 'Image not found',
                 'uuid' => $uuid,
@@ -210,7 +210,7 @@ class AlbumController
 
         $count = 1;
         foreach (glob($albumPath . '/*.jpeg') as $image) {
-            if($count >= $number) {
+            if ($count >= $number) {
                 return response()->file($image);
             }
             $count++;
@@ -242,6 +242,6 @@ class AlbumController
         $count = count(glob($albumPath . '/*.jpeg'));
         return response()->json([
             'imageCount' => $count
-        ],200);
+        ], 200);
     }
 }
