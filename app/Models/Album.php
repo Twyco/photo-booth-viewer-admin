@@ -21,5 +21,13 @@ class Album extends Model
         static::creating(function ($album) {
             $album->uuid = (string) Str::uuid();
         });
+
+        static::created(function ($album) {
+            $randomString = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 25);
+            AlbumAccessCode::create([
+                'album_uuid' => $album->uuid,
+                'access_code' => $randomString,
+            ]);
+        });
     }
 }

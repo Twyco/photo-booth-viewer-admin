@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlbumAccessCodeController;
 use App\Http\Controllers\AlbumController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,9 @@ Route::prefix('albums')->group(function () {
 
     Route::delete('{uuid}', [AlbumController::class, 'destroy']);
 
+});
+
+Route::prefix('access')->group(function () {
+
+    Route::get('{code}', [AlbumAccessCodeController::class, 'getAlbumByAccessCode']);
 });
