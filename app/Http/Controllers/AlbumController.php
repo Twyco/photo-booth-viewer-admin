@@ -7,8 +7,6 @@ use App\Http\Requests\UpdateAlbumRequest;
 use App\Models\Album;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AlbumController
@@ -182,9 +180,29 @@ class AlbumController
         return response()->file($imagePath);
     }
 
+    public function downloadImageByName($uuid, $imageName): BinaryFileResponse|JsonResponse
+    {
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        $imagePath = storage_path('app/albums/' . $album->path . '/' . $imageName);
+        if (!file_exists($imagePath)) {
+            return response()->json([
+                'error' => 'Image not Found!',
+            ], 404);
+        }
+
+        return response()->download($imagePath, $imageName);
+    }
+
     public function getImageByNumber($uuid, $number): BinaryFileResponse|JsonResponse
     {
-        Log::warning($number);
         $number = intval($number);
         if ($number <= 0) {
             return response()->json([
@@ -212,6 +230,43 @@ class AlbumController
         foreach (glob($albumPath . '/*.jpeg') as $image) {
             if ($count >= $number) {
                 return response()->file($image);
+            }
+            $count++;
+        }
+
+        return response()->json([
+            'error' => 'Image not found!',
+        ], 200);
+    }
+    public function downloadImageByNumber($uuid, $number): BinaryFileResponse|JsonResponse
+    {
+        $number = intval($number);
+        if ($number <= 0) {
+            return response()->json([
+                'error' => 'Image not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        $albumPath = storage_path('app/albums/' . $album->path);
+        if (!is_dir($albumPath)) {
+            return response()->json([
+                'error' => 'Album path not found',
+            ], 404);
+        }
+
+        $count = 1;
+        foreach (glob($albumPath . '/*.jpeg') as $image) {
+            if ($count >= $number) {
+                return response()->download($image, basename($image));
             }
             $count++;
         }

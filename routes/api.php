@@ -17,7 +17,11 @@ Route::prefix('albums')->group(function () {
 
     Route::get('{uuid}/image/{number}', [AlbumController::class, 'getImageByNumber']);
 
+    Route::get('{uuid}/image/{number}/download', [AlbumController::class, 'downloadImageByNumber']);
+
     Route::get('{uuid}/images/{imageName}', [AlbumController::class, 'getImageByName']);
+
+    Route::get('{uuid}/images/{imageName}/download', [AlbumController::class, 'downloadImageByName']);
 
     Route::post('/', [AlbumController::class, 'store']);
 
