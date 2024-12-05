@@ -16,7 +16,9 @@ class AlbumAccessCodeController
         try {
             $accessCode = AlbumAccessCode::where('access_code', $code)->firstOrFail();
             $album = $accessCode->album;
-            return response()->json($album, 200);
+            return response()->json([
+                'album' => $album,
+            ], 200);
         }catch (ModelNotFoundException $e){
             return response()->json([
                 'error' => 'Unknown access code',
