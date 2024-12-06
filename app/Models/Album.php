@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class Album extends Model
 {
-    public mixed $uuid;
     protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'string';
