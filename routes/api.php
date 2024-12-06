@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlbumAccessCodeController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,11 +26,11 @@ Route::prefix('albums')->group(function () {
 
     Route::get('{uuid}/images/{imageName}/download', [AlbumController::class, 'downloadImageByName']);
 
-    Route::post('/', [AlbumController::class, 'store']);
+    Route::post('/store', [AlbumController::class, 'store']);
 
-    Route::put('{uuid}', [AlbumController::class, 'update']);
+    Route::put('/update/{uuid}', [AlbumController::class, 'update']);
 
-    Route::delete('{uuid}', [AlbumController::class, 'destroy']);
+    Route::delete('/delete/{uuid}', [AlbumController::class, 'destroy']);
 
 });
 
@@ -52,6 +53,14 @@ Route::prefix('photobooth')->group(function () {
     Route::get('/auth/{authKey}/album/{uuid}/name', [AlbumController::class, 'getAlbumName']);
 
     Route::get('/auth/{authKey}/album/{uuid}/access-code', [AlbumAccessCodeController::class, 'getAccessCode']);
+
+});
+
+Route::prefix('auth')->group(function () {
+
+    Route::post('/register', [AuthController::class, 'register']);
+
+    Route::post('/login', [AuthController::class, 'login']);
 
 });
 
