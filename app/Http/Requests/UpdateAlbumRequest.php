@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateAlbumRequest extends FormRequest
 {
@@ -11,7 +13,8 @@ class UpdateAlbumRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        //TODO check Admin Rights
+        return true;
     }
 
     /**
@@ -22,7 +25,36 @@ class UpdateAlbumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string|max:30', //TODO Check formatting and change max length
+            'description' => 'string|max:200',
+            'path' => 'string|max:255',
+            'cover_file_name' => 'string|max:255',
+            'event_date' => 'date',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'The name field is required.',
+            'name.max' => 'The name may not be greater than 30 characters.',
+            'description.max' => 'The description may not be greater than 200 characters.',
+            'path.required' => 'The path field is required.',
+            'path.max' => 'The path may not be greater than 255 characters.',
+            'cover_file_name.max' => 'The cover may not be greater than 255 characters.',
+            'event_date.date' => 'The published date must be a valid date.',
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Wir werfen eine Exception, die eine JSON-Antwort zurückgibt
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422)
+        );
+    }
+
 }
