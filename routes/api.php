@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlbumAccessCodeController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('albums')->group(function () {
@@ -36,3 +37,22 @@ Route::prefix('access')->group(function () {
 
     Route::get('{code}', [AlbumAccessCodeController::class, 'getAlbumByAccessCode']);
 });
+
+Route::prefix('settings')->group(function () {
+
+    Route::get('/active-album-uuid', [SettingsController::class, 'getActiveAlbum']);
+
+    Route::post('/active-album-uuid', [SettingsController::class, 'setActiveAlbum']);
+});
+
+Route::prefix('photobooth')->group(function () {
+
+    Route::get('/auth/{authKey}/album/{uuid}/folder-path', [AlbumController::class, 'getAlbumFolderPath']);
+
+    Route::get('/auth/{authKey}/album/{uuid}/name', [AlbumController::class, 'getAlbumName']);
+
+    Route::get('/auth/{authKey}/album/{uuid}/access-code', [AlbumAccessCodeController::class, 'getAccessCode']);
+
+});
+
+

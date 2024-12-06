@@ -299,4 +299,49 @@ class AlbumController
             'imageCount' => $count
         ], 200);
     }
+
+    /**
+     * Following are Function for PhotoBooth Client
+     *
+     */
+
+    public function getAlbumFolderPath($authKey, $uuid): JsonResponse
+    {
+        if($authKey !== 'ocywT1'){
+            return response()->json([
+               'error' => 'Unauthorized',
+            ], 403);
+        }
+
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        return response()->json($album->path, 200);
+    }
+
+    public function getAlbumName($authKey, $uuid): JsonResponse
+    {
+        if($authKey !== 'ocywT1'){
+            return response()->json([
+                'error' => 'Unauthorized',
+            ], 403);
+        }
+
+        try {
+            $album = Album::where('uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Album not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        return response()->json($album->name, 200);
+    }
 }

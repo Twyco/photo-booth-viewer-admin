@@ -26,4 +26,24 @@ class AlbumAccessCodeController
             ], 404);
         }
     }
+
+    public function getAccessCode($authKey, $uuid): JsonResponse
+    {
+        if($authKey !== 'ocywT1'){
+            return response()->json([
+                'error' => 'Unauthorized',
+            ], 403);
+        }
+
+        try {
+            $albumAccessCode = AlbumAccessCode::where('album_uuid', $uuid)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Access Code not found',
+                'uuid' => $uuid,
+            ], 404);
+        }
+
+        return response()->json($albumAccessCode->access_code, 200);
+    }
 }
