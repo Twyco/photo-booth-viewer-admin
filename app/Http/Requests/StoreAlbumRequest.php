@@ -25,7 +25,7 @@ class StoreAlbumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:30', //TODO Check formatting and change max length
+            'name' => 'required|string|max:30',
             'description' => 'nullable|string|max:200',
             'path' => 'required|string|max:255',
             'cover_file_name' => 'nullable|string|max:255',
