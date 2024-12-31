@@ -144,7 +144,7 @@ class AlbumController
         }
 
         $images = [];
-        foreach (glob($albumPath . '/*.jpeg') as $image) {
+        foreach (glob($albumPath . '/*.jpg') as $image) {
             $images[] = basename($image);
         }
 
@@ -233,7 +233,7 @@ class AlbumController
         }
 
         $count = 1;
-        foreach (glob($albumPath . '/*.jpeg') as $image) {
+        foreach (glob($albumPath . '/*.jpg') as $image) {
             if ($count >= $number) {
                 return response()->file($image);
             }
@@ -270,7 +270,7 @@ class AlbumController
         }
 
         $count = 1;
-        foreach (glob($albumPath . '/*.jpeg') as $image) {
+        foreach (glob($albumPath . '/*.jpg') as $image) {
             if ($count >= $number) {
                 return response()->download($image, basename($image));
             }
@@ -300,7 +300,7 @@ class AlbumController
             ], 404);
         }
 
-        $count = count(glob($albumPath . '/*.jpeg'));
+        $count = count(glob($albumPath . '/*.jpg'));
         return response()->json([
             'imageCount' => $count
         ], 200);
