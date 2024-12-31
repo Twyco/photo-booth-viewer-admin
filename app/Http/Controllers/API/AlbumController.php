@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\ImageController;
 use App\Http\Requests\StoreAlbumRequest;
 use App\Http\Requests\UpdateAlbumRequest;
 use App\Models\Album;
@@ -177,9 +178,12 @@ class AlbumController
             ], 404);
         }
 
+        $compressedFilePath = storage_path('app/albums' . $album->path . '/_compressed/compressed_' . $imageName);
+        if(!file_exists($compressedFilePath)){
+            ImageController::compressImage($imagePath, $album->path);
+        }
 
-
-        return response()->file($imagePath);
+        return response()->file($compressedFilePath);
     }
 
     public function downloadImageByName($uuid, $imageName): BinaryFileResponse|JsonResponse
