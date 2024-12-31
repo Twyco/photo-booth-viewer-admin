@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManager;
 
 class ImageController
@@ -13,10 +14,11 @@ class ImageController
 
         $path = storage_path('app/albums' . $albumPath . '/_compressed/');
         if (!file_exists($path)) {
+            Log::warning('Folder created');
             mkdir($path, 0777, true);
         }
         $compressedFilePath = $path . $filename;
-
+        Log::info($compressedFilePath);
         // Bild komprimieren
         $image = ImageManager::imagick()->read($filePath);
 
