@@ -25,13 +25,14 @@ Route::prefix('albums')->group(function () {
 
     Route::get('{uuid}/images/{imageName}/download', [AlbumController::class, 'downloadImageByName']);
 
-    Route::post('/store', [AlbumController::class, 'store']);
 
     Route::put('{uuid}', [AlbumController::class, 'update']);
 
     Route::delete('{uuid}', [AlbumController::class, 'destroy']);
 
 });
+
+Route::post('/store-album', [AlbumController::class, 'store']);
 
 Route::prefix('access')->group(function () {
 
