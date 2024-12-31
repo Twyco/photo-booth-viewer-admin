@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Http\Requests\StoreAlbumAccessCodeRequest;
-use App\Http\Requests\UpdateAlbumAccessCodeRequest;
-use App\Models\Album;
 use App\Models\AlbumAccessCode;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;

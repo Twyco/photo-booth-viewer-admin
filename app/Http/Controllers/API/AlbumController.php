@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Requests\StoreAlbumRequest;
 use App\Http\Requests\UpdateAlbumRequest;
@@ -176,6 +176,8 @@ class AlbumController
                 'error' => 'Image not Found!',
             ], 404);
         }
+
+
 
         return response()->file($imagePath);
     }

@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\AlbumAccessCodeController;
-use App\Http\Controllers\AlbumController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\API\AlbumAccessCodeController;
+use App\Http\Controllers\API\AlbumController;
+use App\Http\Controllers\API\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('albums')->group(function () {
@@ -25,7 +25,7 @@ Route::prefix('albums')->group(function () {
 
     Route::get('{uuid}/images/{imageName}/download', [AlbumController::class, 'downloadImageByName']);
 
-    Route::post('/', [AlbumController::class, 'store']);
+    Route::post('/store', [AlbumController::class, 'store']);
 
     Route::put('{uuid}', [AlbumController::class, 'update']);
 
