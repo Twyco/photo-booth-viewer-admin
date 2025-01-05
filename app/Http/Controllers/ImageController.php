@@ -12,7 +12,7 @@ class ImageController
 
         $filename = 'compressed_' . basename($filePath);
 
-        $path = storage_path('app/albums' . $albumPath . '/_compressed/');
+        $path = storage_path('app/albums/' . $albumPath . '/_compressed/');
         if (!file_exists($path)) {
             Log::warning('Folder created');
             mkdir($path, 0777, true);
