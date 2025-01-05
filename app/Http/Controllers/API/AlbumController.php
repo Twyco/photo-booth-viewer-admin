@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\ImageController;
 use App\Http\Requests\StoreAlbumRequest;
 use App\Http\Requests\UpdateAlbumRequest;
 use App\Models\Album;
@@ -143,7 +144,7 @@ class AlbumController
         }
 
         $images = [];
-        foreach (glob($albumPath . '/*.jpeg') as $image) {
+        foreach (glob($albumPath . '/*.jpg') as $image) {
             $images[] = basename($image);
         }
 
@@ -177,7 +178,12 @@ class AlbumController
             ], 404);
         }
 
-        return response()->file($imagePath);
+        $compressedFilePath = storage_path('app/albums' . $album->path . '/_compressed/compressed_' . $imageName);
+        if(!file_exists($compressedFilePath)){
+            ImageController::compressImage($imagePath, $album->path);
+        }
+
+        return response()->file($compressedFilePath);
     }
 
     public function downloadImageByName($uuid, $imageName): BinaryFileResponse|JsonResponse
@@ -227,7 +233,7 @@ class AlbumController
         }
 
         $count = 1;
-        foreach (glob($albumPath . '/*.jpeg') as $image) {
+        foreach (glob($albumPath . '/*.jpg') as $image) {
             if ($count >= $number) {
                 return response()->file($image);
             }
@@ -264,7 +270,7 @@ class AlbumController
         }
 
         $count = 1;
-        foreach (glob($albumPath . '/*.jpeg') as $image) {
+        foreach (glob($albumPath . '/*.jpg') as $image) {
             if ($count >= $number) {
                 return response()->download($image, basename($image));
             }
@@ -294,7 +300,7 @@ class AlbumController
             ], 404);
         }
 
-        $count = count(glob($albumPath . '/*.jpeg'));
+        $count = count(glob($albumPath . '/*.jpg'));
         return response()->json([
             'imageCount' => $count
         ], 200);
